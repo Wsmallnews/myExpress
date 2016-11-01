@@ -1,10 +1,11 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
+var favicon = require('serve-favicon');     // favicon 图标
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var bodyParser = require('body-parser');    // 初步分析：application/x-www-form-urlencoded和application/json请求，并把变量存入req.body，这种我们才能够获取到！
 var connect = require('connect');
+var session = require('express-session');       // session 中间件
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -15,21 +16,20 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
+app.use(bodyParser.json());                     // 和post 参数的 res.body 有关系
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('smallnews'));
+app.use(session({secret: 'smallnews'}));
 
-// app.use(connect.favicon(path.join(__dirname, 'public/favicon.ico')));
-// app.use(express.favicon());
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/login', routes);
-app.use('/logout', routes);
-app.use('/homepage', routes);
+// app.use('/login', routes);
+// app.use('/logout', routes);
+// app.use('/homepage', routes);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
