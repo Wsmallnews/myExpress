@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    h1= title
+    p Welcome to #{title}
+
+    div 这是我的第一个 nodejs 应用
+
+    form(action="/homepage", method="post")
+        input(name="userid", type="text")
+        input(name="password", type="text")
+
+        input(type=submit value="登录")
